@@ -1,0 +1,28 @@
+const int analogPin = A0; // 아날로그 핀 설정
+const int threshold = 150; // 임계값 설정
+int lastReading; // 마지막 읽은 값 저장
+unsigned long lastPulseTime = 0; // 마지막 펄스 시간
+unsigned long pulseInterval = 0; // 펄스 간격
+
+void setup() {
+  Serial.begin(9600); // 시리얼 통신 시작
+  lastReading = analogRead(analogPin); // 초기 값 설정
+}
+
+void loop() {
+  int reading = analogRead(analogPin); // 현
+재 읽은 값
+  unsigned long currentTime = millis(); // 현재 시간
+
+  // 신호가 임계값을 넘었는지 확인
+  if (lastReading < threshold && reading >= threshold) {
+    // 펄스 간격 계산
+    pulseInterval = currentTime - lastPulseTime;
+    lastPulseTime = currentTime;
+
+    // 시리얼 통신을 통해 펄스 간격 전송
+    Serial.println(pulseInterval);
+  }
+  lastReading = reading; // 마지막 읽은 값 업데이트
+  delay(10); // 안정적인 읽기를 위한 딜레이
+}
