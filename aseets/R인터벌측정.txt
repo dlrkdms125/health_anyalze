@@ -1,0 +1,36 @@
+const int ecgPin = A0;          // ECG 신호 입력 핀
+const int ledPin = 13;          // LED를 사용하여 신호를 확인하는 핀
+const int sampleWindow = 50;    // 샘플링 윈도우 시간 (밀리초)
+const int rWaveThreshold = 100; // R파 감지 임계값
+
+void setup() {
+  Serial.begin(9600);           // 시리얼 통신 초기화
+  pinMode(ecgPin, INPUT);       // ECG 핀을 입력으로 설정
+  pinMode(ledPin, OUTPUT);      // LED 핀을 출력으로 설정
+}
+
+void loop() {
+  unsigned long startMillis = millis(); // 현재 시간 저장
+  int maxSignal = 0; // 최대 신호값 초기화
+
+  // 샘플링 윈도우 동안 최대 신호값 찾기
+  while (millis() - startMillis < sampleWindow) {
+    int ecgValue = analogRead(ecgPin);
+const int ecgPin = A0;          // ECG 신호 입력 핀
+const int ledPin = 13;          // LED를 사용하여 신호를 확인하는 핀
+const int sampleWindow = 50;    // 샘플링 윈도우 시간 (밀리초)
+const int rWaveThreshold = 100; // R파 감지 임계값
+
+void setup() {
+  Serial.begin(9600);           // 시리얼 통신 초기화
+  pinMode(ecgPin, INPUT);       // ECG 핀을 입력으로 설정
+  pinMode(ledPin, OUTPUT);      // LED 핀을 출력으로 설정
+}
+
+void loop() {
+  unsigned long startMillis = millis(); // 현재 시간 저장
+  int maxSignal = 0; // 최대 신호값 초기화
+
+  // 샘플링 윈도우 동안 최대 신호값 찾기
+  while (millis() - startMillis < sampleWindow) {
+    int ecgValue = analogRead(ecgPin);
