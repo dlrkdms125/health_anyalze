@@ -1,0 +1,51 @@
+unsigned int inhaleCount = 0; // 들이마심 횟수
+unsigned int exhaleCount = 0; // 내뱉음 횟수
+unsigned long lastUpdateTime = 0; // 마지막 업데이트 시간
+float inhaleRate = 0.0; // 들이마심 속도
+float exhaleRate = 0.0; // 내뱉음 속도
+
+void setup() {
+  Serial.begin(9600); // 시리얼 통신 초기화
+}
+
+void loop() {
+  int impedanceValue = analogRead(IMPEDANCE_PIN); // 임피던스 값 읽기
+
+  // 호흡 감지 및 횟수 증가
+unsigned int inhaleCount = 0; // 들이마심 횟수
+unsigned int exhaleCount = 0; // 내뱉음 횟수
+unsigned long lastUpdateTime = 0; // 마지막 업데이트 시간
+float inhaleRate = 0.0; // 들이마심 속도
+float exhaleRate = 0.0; // 내뱉음 속도
+
+void setup() {
+  Serial.begin(9600); // 시리얼 통신 초기화
+}
+
+void loop() {
+  int impedanceValue = analogRead(IMPEDANCE_PIN); // 임피던스 값 읽기
+
+  // 호흡 감지 및 횟수 증가
+if (impedanceValue > THRESHOLD) {
+    inhaleCount++;
+  } else {
+    exhaleCount++;
+  }
+
+  // 1초마다 속도 계산 및 출력
+  if (millis() - lastUpdateTime >= 1000) {
+    inhaleRate = (float)inhaleCount / 60.0; // 들이마심 속도 계산
+    exhaleRate = (float)exhaleCount / 60.0; // 내뱉음 속도 계산
+    
+    // 결과 출력
+    Serial.print("Inhale rate: ");
+    Serial.println(inhaleRate);
+    Serial.print("Exhale rate: ");
+    Serial.println(exhaleRate);
+
+    // 변수 초기화
+    inhaleCount = 0;
+    exhaleCount = 0;
+    lastUpdateTime = millis();
+  }
+}

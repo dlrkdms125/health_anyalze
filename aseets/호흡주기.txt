@@ -1,0 +1,40 @@
+unsigned long inhaleStartTime; // 들이마시는 호흡 시작 시간
+bool inhaleDetected = false;   // 들이마시는 호흡 감지 여부
+unsigned long exhaleStartTime; // 내뱉는 호흡 시작 시간
+bool exhaleDetected = false;   // 내뱉는 호흡 감지 여부
+
+void loop() {
+  int impedanceValue = analogRead(IMPEDANCE_PIN); // 임피던스 값 읽기
+
+  // 들이마시는 호흡 감지 및 지속 시간 측정
+  if (impedanceValue > THRESHOLD) {
+    if (!inhaleDetected && !exhaleDetected) {
+      inhaleStartTime = millis();
+      inhaleDetected = true;
+      Serial.println("Inhale detected");
+    }
+  } else {
+    if (inhaleDetected) {
+      unsigned long inhaleDuration = millis() - inhaleStartTime;
+      inhaleDetected = false;
+      Serial.print("Inhale duration: ");
+      Serial.println(inhaleDuration);
+   }
+  }
+
+  // 내뱉는 호흡 감지 및 지속 시간 측정
+  if (impedanceValue <= THRESHOLD) {
+    if (!exhaleDetected && !inhaleDetected) {
+      exhaleStartTime = millis();
+      exhaleDetected = true;
+      Serial.println("Exhale detected");
+    }
+  } else {
+    if (exhaleDetected) {
+      unsigned long exhaleDuration = millis() - exhaleStartTime;
+      exhaleDetected = false;
+      Serial.print("Exhale duration: ");
+      Serial.println(exhaleDuration);
+    }
+  }
+}
