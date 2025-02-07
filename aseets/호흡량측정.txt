@@ -1,0 +1,38 @@
+unsigned int inhaleCount = 0; // 들이마심 횟수
+unsigned int exhaleCount = 0; // 내뱉음 횟수
+unsigned long inhaleVolume = 0; // 들이마심 용량
+unsigned long exhaleVolume = 0; // 내뱉음 용량
+
+void setup() {
+  Serial.begin(9600); // 시리얼 통신 초기화
+}
+
+void loop() {
+  int impedanceValue = 
+analogRead(IMPEDANCE_PIN); // 임피던스 값 읽기
+
+  // 호흡 감지 및 데이터 누적
+  if (impedanceValue > THRESHOLD) {
+    inhaleCount++;
+    inhaleVolume += impedanceValue; // 들이마심 용량 누적
+  } else {
+    exhaleCount++;
+    exhaleVolume += impedanceValue; // 내뱉음 용량 누적
+  }
+  // 1초마다 호흡량 계산 및 출력
+  if (millis() % 1000 == 0) {
+    float inhaleAverage = (float)inhaleVolume / inhaleCount; // 평균 들이마심 용량
+    float exhaleAverage = (float)exhaleVolume / exhaleCount; // 평균 내뱉음 용량
+
+    Serial.print("Inhale volume: ");
+    Serial.println(inhaleAverage);
+    Serial.print("Exhale volume: ");
+    Serial.println(exhaleAverage);
+
+    // 변수 초기화
+    inhaleCount = 0;
+    exhaleCount = 0;
+    inhaleVolume = 0;
+    exhaleVolume = 0;
+  }
+}
